@@ -194,12 +194,14 @@ def main():
     next_level = False
     change_piece = False
     running = True
+    pause = True
 
     while running:
         fall_speed = 0.3
-        board = do_board(locked)
-        fall_time += clock.get_rawtime()
-        clock.tick()
+        if pause:
+            board = do_board(locked)
+            fall_time += clock.get_rawtime()
+            clock.tick()
         if fall_time / 1000 >= fall_speed:
             fall_time = 0
             current_piece.y += 1
@@ -216,6 +218,11 @@ def main():
                     current_piece.x -= 1
                     if not current_pos(current_piece, board):
                         current_piece.x += 1
+                elif event.key == pygame.K_SPACE:
+                    if pause:
+                        pause = False
+                    else:
+                        pause = True
                 elif event.key == pygame.K_RIGHT:
                     current_piece.x += 1
                     if not current_pos(current_piece, board):
@@ -228,32 +235,33 @@ def main():
                     current_piece.y += 1
                     if not current_pos(current_piece, board):
                         current_piece.y -= 1
-        shape_pos = to_normal_shape(current_piece)
-        for i in range(len(shape_pos)):
-            x, y = shape_pos[i]
-            if y > -1:
-                board[y][x] = current_piece.color
-        if change_piece:
-            for pos in shape_pos:
-                p = (pos[0], pos[1])
-                locked[p] = current_piece.color
-            current_score += 10
-            current_piece = next_element
-            next_element = get_shape()
-            change_piece = False
-            combo = clear_rows(board, locked)
-            if combo:
-                current_score += 100
-        draw_window(screen)
-        draw_next_shape(next_element, screen)
-        draw_best_score(best_score[-1], screen)
-        draw_current_score(current_score, screen)
-        pygame.display.update()
-        if check_lost(locked):
-            if current_score > best_score[-1]:
-                best_score.append(current_score)
-                next_level = True
-            running = False
+        if pause:
+            shape_pos = to_normal_shape(current_piece)
+            for i in range(len(shape_pos)):
+                x, y = shape_pos[i]
+                if y > -1:
+                    board[y][x] = current_piece.color
+            if change_piece:
+                for pos in shape_pos:
+                    p = (pos[0], pos[1])
+                    locked[p] = current_piece.color
+                current_score += 10
+                current_piece = next_element
+                next_element = get_shape()
+                change_piece = False
+                combo = clear_rows(board, locked)
+                if combo:
+                    current_score += 100
+            draw_window(screen)
+            draw_next_shape(next_element, screen)
+            draw_best_score(best_score[-1], screen)
+            draw_current_score(current_score, screen)
+            pygame.display.update()
+            if check_lost(locked):
+                if current_score > best_score[-1]:
+                    best_score.append(current_score)
+                    next_level = True
+                running = False
     # Экран окончания
     screen.fill((0, 0, 0))
     if next_level:
