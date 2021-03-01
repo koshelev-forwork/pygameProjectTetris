@@ -1,0 +1,19 @@
+pygame 2.0.1
+python 3.8.6rci
+main_menu() - отрисовка экрана меню
+main() - главный игровой цикл 
+Element - класс задания фигур и их отрибутов
+do_board(locked) - создание игрового поля
+to_normal_shape(shape) - преобразование елемента взятого из импортированного массива, для получения координат
+current_pos(shape, board) - возвращение bool инового значения необходимого для обозначения текущей позиции в ходе движения и поворотов эдементов
+check_lost(position) - проверка на проигрыш 
+get_shape() - случайное значение формы из импортированного массива
+draw_text_middle(text, size, color, screen) - отрисовка текста после проигрыша
+draw_grid(screen, row, col) - отрисовка решетки
+clear_rows(board, locked) - стереть собраный ряд
+draw_next_shape(shape, screen) - отрисовка следущего эллемента
+give_info(screen) - выводит на экран содержимое приложенного файла information.txt
+draw_window(screen) - отрисовка окна с ин=гровым полем 
+draw_menu(screen) - отрисовка меню 
+draw_current_score(current_score, screen) - отрисовка очков в реальном времени 
+draw_best_score(best_score, screen) - отрисовка лучшего результата/нового минимального порога победы
